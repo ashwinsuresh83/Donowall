@@ -44,7 +44,7 @@ async (req, res) => {
 
         // if admin exists
         if (admin)
-            return res.status(400).send('User Already Exists');
+            return res.status(400).json({ error: "User Already Exists" });
 
         admin = new Admin({
             name,
