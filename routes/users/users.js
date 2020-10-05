@@ -8,13 +8,19 @@ const jwt = require('jsonwebtoken');
 const userToken = config.get('userToken');
 const User = require('../../models/Users');
 
+// sample route
+router.get('/', (_, res) => {
+    res.status(200).send('tis working')
+})
+
+// signup route for users
 router.post('/',
     [
         check('f_name', 'First Name is required').not().isEmpty(),
         check('l_name', 'Last Name is required').not().isEmpty(),
         check('email', 'Please include a valid email').isEmail(),
         check('password', 'Password is required').not().isEmpty(),
-        check('username', 'Username is required').not().isEmpty(),
+        check('mobile_no', 'Mobile Number is required').not().isEmpty(),
         check('city', 'City is required').not().isEmpty(),
         check('state', 'State is required').not().isEmpty(),
         check('blood_group', 'Blood Group is required').not().isEmpty(),
@@ -31,7 +37,7 @@ router.post('/',
                 l_name,
                 email,
                 password,
-                username,
+                mobile_no,
                 city,
                 state,
                 blood_group
@@ -49,7 +55,7 @@ router.post('/',
                 l_name,
                 email,
                 password,
-                username,
+                mobile_no,
                 city,
                 state,
                 blood_group,
