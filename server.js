@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const connectDB = require('./config/db');
 
 // api Routes
@@ -11,12 +12,13 @@ const app = express();
 // connect to database
 connectDB();
 
-app.use(express.json({extented: false}));
+app.use(express.json());
+app.use(cors());
 
 // base url = http://localhost:5000/api
 app.use('/api/user/users', userSignupRoute);
-app.use('/api/user/auth',userAuthRoute)
 app.use('/api/admin/users', adminSignupRoute);
+app.use('/api/user/auth',userAuthRoute);
 app.use('/api/admin/auth',adminAuthRoute);
 
 const PORT = process.env.PORT || 5000;
