@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
+const config = require('config');
 
 // api Routes
 const userSignupRoute = require('./routes/users/users');
@@ -13,7 +14,17 @@ const app = express();
 connectDB();
 
 app.use(express.json());
-app.use(cors());
+
+// setting up cors
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (config.get('whitelist').indexOf(origin) !== -1)   
+            callback(null, true);
+        else 
+            callback(null, false);
+    }
+}
+app.use(cors(corsOptions));
 
 // base url = http://localhost:5000/api
 app.use('/api/user/users', userSignupRoute);
