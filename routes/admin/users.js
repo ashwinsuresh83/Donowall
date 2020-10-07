@@ -63,9 +63,9 @@ async (req, res) => {
         await admin.save();
         
         const payload = {
-            admin: {
+            user: {
                 id: admin.id,
-                typeToken: adminToken
+                type: adminToken
             }
         };
 
@@ -75,7 +75,7 @@ async (req, res) => {
             { expiresIn: '5 days' },
             (err, token) => {
                 if (err) throw err
-                res.json({ token, typeToken: adminToken })
+                res.json({ token })
         });
 
     } 

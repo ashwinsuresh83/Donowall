@@ -6,8 +6,8 @@ const config = require('config');
 // api Routes
 const userSignupRoute = require('./routes/users/users');
 const adminSignupRoute = require('./routes/admin/users');
-const userAuthRoute=require('./routes/users/auth')
-const adminAuthRoute=require('./routes/admin/auth')
+const userAuthRoute=require('./routes/users/auth');
+const adminAuthRoute=require('./routes/admin/auth');
 
 const app = express();
 // connect to database
@@ -29,6 +29,7 @@ app.use(cors(corsOptions));
 // base url = http://localhost:5000/api
 app.use('/api/user/users', userSignupRoute);
 app.use('/api/admin/users', adminSignupRoute);
+
 app.use('/api/user/auth',userAuthRoute);
 app.use('/api/admin/auth',adminAuthRoute);
 

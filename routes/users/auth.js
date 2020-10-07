@@ -4,7 +4,7 @@ const { check, validationResult } = require('express-validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const config = require('config');
-const User=require('../../models/Users')
+const User = require('../../models/Users');
 const userToken = config.get('userToken');
 
 // authenticating the user token
@@ -38,21 +38,20 @@ router.post('/login',
             const payload = {
                 user: {
                     id: user.id,
-                    typeToken: userToken
+                    type: userToken
                 }
             }
 
             jwt.sign(
                 payload,
-                'webinar-secret-token',
+                config.get('SESSION_SECRET'),
                 {expiresIn: "5 days"},
                 (err, token) => {
                     if(err) throw err
-                    res.json( { token } )
+                    res.json({ token });
             })
         }
         catch (err) {
-            console.log(err.message)
             res.status(500).send('Server error')
         }
     }

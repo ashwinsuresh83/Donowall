@@ -70,7 +70,7 @@ router.post('/',
             const payload = {
                 user: {
                     id: user.id,
-                    typeToken: userToken
+                    type: userToken
                 }
             };
 
@@ -80,7 +80,7 @@ router.post('/',
                 { expiresIn: '5 days' },
                 (err, token) => {
                     if (err) throw err
-                    res.json({ token, typeToken: userToken })
+                    res.json({ token })
             });
         }
         catch (err) {
