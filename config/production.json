@@ -3,5 +3,5 @@
     "DB": "mongodb+srv://donowall:donowall-zenith-123@cluster0.uf1cn.mongodb.net/donowall?retryWrites=true&w=majority",
     "adminToken": "jLuMxYg4a)%@^R6:v9{p",
     "userToken": "nTB,eW]QPrV;CRdhf[2@",
-    "whitelist": ["http://localhost:3000", "https://donowall.netlify.app/"]
+    "whitelist": ["http://localhost:3000", "https://donowall.netlify.app/", "https://web.postman.co"]
 }

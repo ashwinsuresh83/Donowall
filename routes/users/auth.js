@@ -6,11 +6,20 @@ const jwt = require('jsonwebtoken')
 const config = require('config');
 const User = require('../../models/Users');
 const userToken = config.get('userToken');
+const userAuth = require('../../middleware/userAuth');
 
 // authenticating the user token
-router.get('/login', (_, res) => {
-    res.status(200).send('tis working')
+router.get('/', userAuth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select('-password');
+        res.status(200).json(user);
+    } 
+    catch (err) {
+        res.status(500).send('Server Error');
+    }
 })
+
+// login route for the user
 router.post('/login', 
     [
         // checking whether the email is valid or not
@@ -56,4 +65,5 @@ router.post('/login',
         }
     }
 )
+
 module.exports=router
