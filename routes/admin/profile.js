@@ -9,6 +9,7 @@ const crypto = require('crypto');
 const path = require('path');
 const adminAuth = require('../../middleware/adminAuth');
 const mongoURI = config.get('DB');
+const Admin = require('../../models/Admin');
 
 // Create mongo connection
 const conn = mongoose.createConnection(mongoURI, {
@@ -59,13 +60,33 @@ router.post('/photo',
         adminAuth,
         upload.single('file')
     ], 
-    (req, res) => res.status(201).send(req.file)
+    async (req, res) => {
+
+        try {
+            const admin = await Admin.findOne({ _id: req.user.id });
+        
+            // if profile picture is already present
+            if (admin.image) {
+                const img_id = admin.image;
+                gfs.remove({ _id: img_id, root: 'profile' }, (err, _) => {
+                    if (err)
+                        return res.send(404).json({ err: "Error while deleting" })
+                })
+            }
+
+            admin.image = req.file.id;
+            await admin.save();
+            res.status(201).send(req.file);   
+        } 
+        catch (err) {
+            console.log(err.message);
+            res.status(500).json({ err: "Server Error" });
+        }
+    }
 )
 
 // get the image
-router.get('/photo', adminAuth, (req, res) => {
-    console.log(gfs);
-    // res.send(req.query.name)
+router.get('/photo', (req, res) => {
     gfs.files.findOne({ filename: req.query.name }, (err, file) => {
 
         if (err)
