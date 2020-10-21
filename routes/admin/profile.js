@@ -101,4 +101,4 @@ router.get('/photo', (req, res) => {
     });
 })
 
-module.exports=router
+module.exports = router

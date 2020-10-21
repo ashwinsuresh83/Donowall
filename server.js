@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const config = require('config');
+const jwt = require('jsonwebtoken');
 
 // api Routes
 const userSignupRoute = require('./routes/users/users');
@@ -27,7 +28,8 @@ const corsOptions = {
 }
 app.use(cors(corsOptions));
 
-// base url = http://localhost:5000/api
+// base url = http://localhost:5000/api (development)
+// base url = https://api-donowall.herokuapp.com/api (production)
 app.use('/api/user/users', userSignupRoute);
 app.use('/api/admin/users', adminSignupRoute);
 
@@ -35,6 +37,32 @@ app.use('/api/user/auth',userAuthRoute);
 app.use('/api/admin/auth',adminAuthRoute);
 
 app.use('/api/admin/profile', adminProfileRoute);
+
+// returns the type token
+app.post('/api/type/user', (req, res) => {
+    const { token } = req.body;
+    try {
+        const decoded = jwt.verify(token, config.get('SESSION_SECRET'));
+        res.status(200).json({ typeToken: decoded.user.type });
+    }
+    catch (err) {
+        console.log(err.message);
+        res.status(500).json({ err: 'Server Error' });
+    }
+})
+
+//errors
+app.use((_, __, next) => {
+    const err = new Error('No API Route Found');
+    err.status = 404;
+    next(err);
+})
+
+//handling error
+app.use((err, _, res, __) => {
+    res.status(err.status || 500);
+    res.send(err.message);
+})
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
