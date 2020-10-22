@@ -18,15 +18,16 @@ connectDB();
 app.use(express.json());
 
 // setting up cors
-const corsOptions = {
-    origin: function (origin, callback) {
-        if (config.get('whitelist').indexOf(origin) !== -1)   
-            callback(null, true);
-        else 
-            callback(null, false);
-    }
-}
-app.use(cors(corsOptions));
+// const corsOptions = {
+//     origin: function (origin, callback) {
+//         console.log(origin)
+//         if (config.get('whitelist').indexOf(origin) !== -1)   
+//             callback(null, true);
+//         else 
+//             callback(null, false);
+//     }
+// }
+app.use(cors());
 
 // base url = http://localhost:5000/api (development)
 // base url = https://api-donowall.herokuapp.com/api (production)
