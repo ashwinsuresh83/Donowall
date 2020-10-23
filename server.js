@@ -10,6 +10,7 @@ const adminSignupRoute = require('./routes/admin/users');
 const userAuthRoute=require('./routes/users/auth');
 const adminAuthRoute=require('./routes/admin/auth');
 const adminProfileRoute = require('./routes/admin/profile');
+const userProfileRoute=require('./routes/users/profile')
 
 const app = express();
 // connect to database
@@ -38,6 +39,7 @@ app.use('/api/user/auth',userAuthRoute);
 app.use('/api/admin/auth',adminAuthRoute);
 
 app.use('/api/admin/profile', adminProfileRoute);
+app.use('/api/user/profile',userProfileRoute)
 
 // returns the type token
 app.post('/api/type/user', (req, res) => {

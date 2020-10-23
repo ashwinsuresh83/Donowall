@@ -10,6 +10,7 @@ const path = require('path');
 const adminAuth = require('../../middleware/adminAuth');
 const mongoURI = config.get('DB');
 const Admin = require('../../models/Admin');
+const { findById } = require('../../models/Admin');
 
 // Create mongo connection
 const conn = mongoose.createConnection(mongoURI, {
@@ -99,6 +100,30 @@ router.get('/photo', (req, res) => {
         const readstream = gfs.createReadStream(file.filename);
         readstream.pipe(res);
     });
+})
+router.put('/edit',adminAuth, async (req,res)=>{
+    try{
+        const admin= await Admin.findByIdAndUpdate(req.user.id,{$set:req.body},{new:true});
+        res.json({admin})
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({ err: "Server Error" });
+    }
+})
+router.put('/editblood',adminAuth,async (req,res)=>{
+    try{
+        const admin=await Admin.findById(req.user.id)
+        admin.blood_data=req.body.data
+        console.log(req.body.data)
+        await admin.save()
+        res.json(admin.blood_data)
+        
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({ err: "Server Error" });
+    }
 })
 
 module.exports = router
