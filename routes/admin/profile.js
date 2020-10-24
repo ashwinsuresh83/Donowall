@@ -10,7 +10,7 @@ const path = require('path');
 const adminAuth = require('../../middleware/adminAuth');
 const mongoURI = config.get('DB');
 const Admin = require('../../models/Admin');
-const { findById } = require('../../models/Admin');
+const { check, validationResult } = require('express-validator');
 
 // Create mongo connection
 const conn = mongoose.createConnection(mongoURI, {
@@ -71,7 +71,7 @@ router.post('/photo',
                 const img_id = admin.image;
                 gfs.remove({ _id: img_id, root: 'profile' }, (err, _) => {
                     if (err)
-                        return res.send(404).json({ err: "Error while deleting" })
+                        return res.send(404).json({ err: "Error while deleting" });
                 })
             }
 
@@ -101,26 +101,50 @@ router.get('/photo', (req, res) => {
         readstream.pipe(res);
     });
 })
-router.put('/edit',adminAuth, async (req,res)=>{
-    try{
-        const admin= await Admin.findByIdAndUpdate(req.user.id,{$set:req.body},{new:true});
-        res.json({admin})
+
+// edit the admin profile 
+router.put('/edit', 
+[
+    adminAuth, 
+    [
+        check('name', 'Hospital name is required').not().isEmpty(),
+        check('contact', 'Contact is required').not().isEmpty(),
+        check('city', 'City is required').not().isEmpty(),
+        check('state', 'State is required').not().isEmpty(),
+        check('address', 'Address is required').not().isEmpty(),
+        check('pincode', 'Pincode is required').not().isEmpty()
+    ]
+], 
+async (req, res)=>{
+    try {
+        const errors = validationResult(req);
+        // if the any of the field is missing
+        if (!errors.isEmpty())
+            return res.status(400).json({ error: errors.array() });
+
+        const admin = await Admin.findByIdAndUpdate(
+            req.user.id,
+            { $set: req.body },
+            { new: true }
+        );
+        res.status(200).json({ admin });
     }
-    catch(err){
+    catch (err) {
         console.log(err)
         res.status(500).json({ err: "Server Error" });
     }
 })
-router.put('/editblood',adminAuth,async (req,res)=>{
-    try{
-        const admin=await Admin.findById(req.user.id)
-        admin.blood_data=req.body.data
-        console.log(req.body.data)
-        await admin.save()
-        res.json(admin.blood_data)
-        
+
+// edit the blood data
+router.put('/editblood', adminAuth, async (req,res) => {
+    try {
+        const { data } = req.body;
+        const admin = await Admin.findById(req.user.id);
+        admin.blood_data = data;
+        await admin.save();
+        res.status(200).json({ blood_data: admin.blood_data });
     }
-    catch(err){
+    catch (err) {
         console.log(err)
         res.status(500).json({ err: "Server Error" });
     }

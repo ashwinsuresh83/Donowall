@@ -39,7 +39,7 @@ app.use('/api/user/auth',userAuthRoute);
 app.use('/api/admin/auth',adminAuthRoute);
 
 app.use('/api/admin/profile', adminProfileRoute);
-app.use('/api/user/profile',userProfileRoute)
+app.use('/api/user/profile', userProfileRoute);
 
 // returns the type token
 app.post('/api/type/user', (req, res) => {
