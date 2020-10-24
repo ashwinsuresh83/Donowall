@@ -35,7 +35,7 @@ const AdminSchema = new mongoose.Schema({
     },
     blood_data: [{
         name: { type: String, required: true },
-        value: { type: String, required: true }
+        value: { type: Number, required: true }
     }],
     pincode: {
         type: Number,
