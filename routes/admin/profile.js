@@ -68,14 +68,14 @@ router.post('/photo',
         
             // if profile picture is already present
             if (admin.image) {
-                const img_id = admin.image;
-                gfs.remove({ _id: img_id, root: 'profile' }, (err, _) => {
+                const img_name = admin.image;
+                gfs.remove({ filename: img_name, root: 'profile' }, (err, _) => {
                     if (err)
                         return res.send(404).json({ err: "Error while deleting" });
                 })
             }
 
-            admin.image = req.file.id;
+            admin.image = req.file.filename;
             await admin.save();
             res.status(201).send(req.file);   
         } 
