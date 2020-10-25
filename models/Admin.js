@@ -6,7 +6,7 @@ const AdminSchema = new mongoose.Schema({
         required: true
     },
     image: {
-        type: mongoose.Schema.Types.ObjectId
+        type: String
     },
     city: {
         type: String,
