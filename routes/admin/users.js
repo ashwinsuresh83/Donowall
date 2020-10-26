@@ -20,6 +20,7 @@ router.post('/',
     check('state', 'State is required').not().isEmpty(),
     check('address', 'Address is required').not().isEmpty(),
     check('pincode', 'Pincode is required').not().isEmpty(),
+    check('image', 'Image Name is required').not().isEmpty()
 ],  
 async (req, res) => {
     try {
@@ -37,7 +38,8 @@ async (req, res) => {
             email,
             password,
             pincode,
-            contact
+            contact,
+            image
         } = req.body;
 
         let admin = await Admin.findOne({ email });
@@ -54,7 +56,8 @@ async (req, res) => {
             email,
             password,
             pincode,
-            contact
+            contact,
+            image
         });
 
         const salt = await bcrypt.genSalt(10);

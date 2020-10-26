@@ -55,6 +55,20 @@ const storage = new GridFsStorage({
 
 const upload = multer({ storage });
 
+// uploading image while signup
+router.post('/signup/upload', 
+    upload.single('file'),
+    (req, res) => {
+        try {
+            res.status(201).send(req.file);
+        }
+        catch (err) {
+            console.log(err.message);
+            res.status(500).send('Server Error');
+        }
+    }
+)
+
 // uploading the profile photo 
 router.post('/photo', 
     [
