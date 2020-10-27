@@ -7,10 +7,11 @@ const jwt = require('jsonwebtoken');
 // api Routes
 const userSignupRoute = require('./routes/users/users');
 const adminSignupRoute = require('./routes/admin/users');
-const userAuthRoute=require('./routes/users/auth');
-const adminAuthRoute=require('./routes/admin/auth');
+const userAuthRoute = require('./routes/users/auth');
+const adminAuthRoute = require('./routes/admin/auth');
 const adminProfileRoute = require('./routes/admin/profile');
-const userProfileRoute=require('./routes/users/profile')
+const userProfileRoute = require('./routes/users/profile');
+const userHospital = require('./routes/users/hospital');
 
 const app = express();
 // connect to database
@@ -40,6 +41,8 @@ app.use('/api/admin/auth',adminAuthRoute);
 
 app.use('/api/admin/profile', adminProfileRoute);
 app.use('/api/user/profile', userProfileRoute);
+
+app.use('/api/user/hospital', userHospital);
 
 // returns the type token
 app.post('/api/type/user', (req, res) => {
