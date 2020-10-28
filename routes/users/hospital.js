@@ -24,4 +24,26 @@ router.get('/all/hospitals', userAuth, async (req, res) => {
     }
 });
 
+// get only one hosiptal details
+router.get('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const hospital = await Admin.findOne({
+            $and: [
+                { _id: id },
+                { image: { $ne: null } }
+            ]
+        }).select('-password');
+
+        if (!hospital)
+            return res.status(404).json({ error: "Not Found" });
+        
+        res.status(200).json({ hospital });
+    }
+    catch (err) {
+        console.log(err.message);
+        res.status(500).send("Server Error");
+    }
+});
+
 module.exports = router;
