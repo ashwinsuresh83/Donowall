@@ -65,4 +65,16 @@ router.post('/login',
         }
     }
 )
+
+router.post('/change', async (_, res) => {
+    try {
+        const result = await Admin.updateMany({}, [{$set : { "isAccepetingAppointment": false } }]);
+        res.status(200).json(result); 
+    }
+    catch (err) {
+        console.log(err.message);
+        res.status(500).send("Error")
+    }
+})
+
 module.exports=router

@@ -150,4 +150,22 @@ router.put('/editblood', adminAuth, async (req,res) => {
     }
 })
 
+router.put('/change/accepting/status', adminAuth, async (req, res) => {
+    try {
+        let admin = await Admin.findOne({ _id: req.user.id });
+
+        if (!admin)
+            return res.status(403).send("Error in finding the admin");
+
+        admin.isAccepetingAppointment = !admin.isAccepetingAppointment;
+        
+        await admin.save();
+        res.status(200).json({ admin });
+    }
+    catch (err) {
+        console.log(err.message);
+        res.status(500).send("Server Error");
+    }
+});
+
 module.exports = router

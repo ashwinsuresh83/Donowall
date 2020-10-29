@@ -12,6 +12,7 @@ const adminAuthRoute = require('./routes/admin/auth');
 const adminProfileRoute = require('./routes/admin/profile');
 const userProfileRoute = require('./routes/users/profile');
 const userHospital = require('./routes/users/hospital');
+const slots = require('./routes/admin/slots');
 
 const app = express();
 // connect to database
@@ -43,6 +44,8 @@ app.use('/api/admin/profile', adminProfileRoute);
 app.use('/api/user/profile', userProfileRoute);
 
 app.use('/api/user/hospital', userHospital);
+
+app.use('/api/admin/slot', slots);
 
 // returns the type token
 app.post('/api/type/user', (req, res) => {

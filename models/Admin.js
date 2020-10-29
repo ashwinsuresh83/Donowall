@@ -45,6 +45,10 @@ const AdminSchema = new mongoose.Schema({
     contact: {
         type: String,
         required: true
+    },
+    isAccepetingAppointment: {
+        type: Boolean,
+        default: false
     }
 });
 
