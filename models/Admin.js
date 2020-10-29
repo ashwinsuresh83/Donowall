@@ -46,7 +46,7 @@ const AdminSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    isAccepetingAppointment: {
+    isAcceptingAppointment: {
         type: Boolean,
         default: false
     }

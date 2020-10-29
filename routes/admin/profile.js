@@ -157,7 +157,7 @@ router.put('/change/accepting/status', adminAuth, async (req, res) => {
         if (!admin)
             return res.status(403).send("Error in finding the admin");
 
-        admin.isAccepetingAppointment = !admin.isAccepetingAppointment;
+        admin.isAcceptingAppointment = !admin.isAcceptingAppointment;
         
         await admin.save();
         res.status(200).json({ admin });
