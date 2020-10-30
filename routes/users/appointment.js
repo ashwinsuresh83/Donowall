@@ -5,6 +5,7 @@ const moment = require('moment');
 const Admin = require('../../models/Admin');
 const User = require('../../models/Users');
 const Slots = require('../../models/Slots');
+const Appointment=require('../../models/appointments')
 const userAuth = require('../../middleware/userAuth');
 const auth = require('../../middleware/auth');
 const validateObjId = require('../../middleware/validateObjId');
@@ -69,7 +70,18 @@ router.get('/get/available/slots/:id',
         res.status(500).send("Server Error");
     }
 });
+router.post('/slot',userAuth, async(req,res)=>{
+    try{
+        let appointments=req.body
+        appointment=new Appointment(appointments)
+        await appointment.save()
+        return res.status(200).json(appointment)
+    }
+    catch(err){
+        console.log(err)
+    }
 
+})
 function getIndex(day) {
     return weekdays.indexOf(day);
 }
