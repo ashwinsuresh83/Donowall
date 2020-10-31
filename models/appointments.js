@@ -1,20 +1,31 @@
-const mongoose=require('mongoose')
+const mongoose = require('mongoose');
 
-const appointmentSchema=new mongoose.Schema({
-    adminId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'admin'
+const AppointmentSchema = new mongoose.Schema({
+    admin: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'admin'
     },
-    userId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'users'
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
     },
     time:[],
-    hasDonated:{type:Boolean,required:true},
-    date:{type:String,required:true},
-    weekDay:{type:String,required:true}
+    hasDonated: {
+        type: Boolean,
+        default: false
+    },
+    date: {
+        type: String,
+        required: true
+    },
+    weekDay: {
+        type: String,
+        required: true
+    },
+    bookedOn: {
+        type: Date, 
+        default: Date.now()
+    }
+});
 
-
-
-})
-module.exports=Appointment=mongoose.model('appointment',appointmentSchema)
+module.exports = Appointment = mongoose.model('appointment', AppointmentSchema)
