@@ -5,28 +5,12 @@ const moment = require('moment');
 const Admin = require('../../models/Admin');
 const User = require('../../models/Users');
 const Slots = require('../../models/Slots');
+const Appointment = require('../../models/Appointments');
 const userAuth = require('../../middleware/userAuth');
 const auth = require('../../middleware/auth');
 const validateObjId = require('../../middleware/validateObjId');
 
 const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-// get the status of the admin of whether they are accepting appoitments
-router.get('/get/admin/status/:id', 
-    [auth, validateObjId('id')], 
-    async (req, res) => {
-        try {
-            const result = await Admin.findOne({ _id: req.params.id })
-                .select('isAcceptingAppointment');
-            
-            res.status(200).send(result);
-        }
-        catch (err) {
-            console.log(err.message);
-            res.status(500).send('Server Error')
-        }
-    }
-)
 
 router.get('/get/available/slots/:id', 
 [
@@ -70,8 +54,42 @@ router.get('/get/available/slots/:id',
     }
 });
 
+// booking the slot
+router.post('/slot', userAuth, async (req, res) => {
+
+    try {
+        
+        const user = await User.findOne({ _id: req.user.id }).select('blocked');
+        
+        if (user.blocked) {
+            return res.status(400).json("You Are Not Allowed to Book Now.");
+        }
+
+        // const result = await Appointment.findOne({
+        //     $and: [
+        //         { user: req.user.id },
+        //         { hasDonated: false }
+        //     ]
+        // });
+
+        const body = {
+            user: req.user.id,
+            ...req.body
+        };
+
+        const appointment = new Appointment(body);
+        await appointment.save();
+        res.status(200).json(appointment);
+    }
+    catch(err) {
+        console.log(err.message);
+        res.status(500).send("Server Error");
+    }
+
+});
+
 function getIndex(day) {
     return weekdays.indexOf(day);
 }
 
-module.exports = router
+module.exports = router;
