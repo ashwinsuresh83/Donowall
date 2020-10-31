@@ -14,6 +14,7 @@ const userProfileRoute = require('./routes/users/profile');
 const userHospital = require('./routes/users/hospital');
 const slots = require('./routes/admin/slots');
 const appointment = require('./routes/users/appointment');
+const adminAppointments=require('./routes/admin/appointments')
 
 const app = express();
 // connect to database
@@ -46,6 +47,7 @@ app.use('/api/user/profile', userProfileRoute);
 
 app.use('/api/user/hospital', userHospital);
 app.use('/api/user/appointment', appointment);
+app.use('/api/admin/appointments',adminAppointments);
 
 app.use('/api/admin/slot', slots);
 
