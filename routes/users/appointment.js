@@ -59,26 +59,27 @@ router.post('/slot', userAuth, async (req, res) => {
 
     try {
         
-        const user = await User.findOne({ _id: req.user.id }).select('blocked');
+        const user = await User.findOne({ _id: req.user.id });
         
         if (user.blocked) {
-            return res.status(400).json("You Are Not Allowed to Book Now.");
+            return res.status(400).json({ error: "You Are Not Allowed to Book Now." });
         }
 
-        // const result = await Appointment.findOne({
-        //     $and: [
-        //         { user: req.user.id },
-        //         { hasDonated: false }
-        //     ]
-        // });
+        if (user.hasBooked) {
+            return res.status(400).json({ error: "You Have Already Booked An Appoinment." })
+        }
 
         const body = {
             user: req.user.id,
             ...req.body
         };
 
+        user.hasBooked = true;
+        await user.save();
+
         const appointment = new Appointment(body);
         await appointment.save();
+
         res.status(200).json(appointment);
     }
     catch(err) {

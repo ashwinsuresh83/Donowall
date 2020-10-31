@@ -44,6 +44,10 @@ const UserSchema = new mongoose.Schema({
     },
     image_url: {
         type: String
+    },
+    hasBooked: {
+        type: Boolean,
+        default: false
     }
 });
 
