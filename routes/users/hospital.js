@@ -25,7 +25,7 @@ router.get('/all/hospitals', userAuth, async (req, res) => {
 });
 
 // get only one hosiptal details
-router.get('/:id', async (req, res) => {
+router.get('/:id', userAuth, async (req, res) => {
     try {
         const { id } = req.params;
         const hospital = await Admin.findOne({
